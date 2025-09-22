@@ -42,6 +42,7 @@ format:
 .PHONY: lint
 lint:
 	black --check .
+	flake8 .
 
 # Comandos de banco de dados
 .PHONY: migrate
