@@ -5,6 +5,7 @@ from hermanitto_docs_api.schemas.document_type_schema import DocumentTypeCreate
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
 
+
 async def create_type(db: AsyncSession, type_in: DocumentTypeCreate):
     doc_type = DocumentType(name=type_in.name)
     db.add(doc_type)
@@ -15,9 +16,9 @@ async def create_type(db: AsyncSession, type_in: DocumentTypeCreate):
     except IntegrityError:
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail='Type already exists'
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Type already exists"
         )
+
 
 async def list_types(db: AsyncSession):
     result = await db.execute(select(DocumentType))

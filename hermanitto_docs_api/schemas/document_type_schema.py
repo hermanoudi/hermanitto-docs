@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
+
 class DocumentTypeCreate(BaseModel):
     name: str
+
 
 class DocumentTypeOut(BaseModel):
     id: int

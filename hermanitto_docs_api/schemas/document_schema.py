@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class DocumentCreate(BaseModel):
     type_id: int
     link: str
+
 
 class DocumentOut(BaseModel):
     id: int
