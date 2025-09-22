@@ -8,12 +8,9 @@ from hermanitto_docs_api.core.security import get_password_hash, create_access_t
 @pytest.mark.asyncio
 async def test_create_document(async_client: AsyncClient, db_session):
     # Create user
-    user = User(
-        username="testuser",
-        hashed_password=get_password_hash("testpass")
-    )
+    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
     db_session.add(user)
-    
+
     # Create document type
     doc_type = DocumentType(name="comprovante")
     db_session.add(doc_type)
@@ -24,14 +21,9 @@ async def test_create_document(async_client: AsyncClient, db_session):
     headers = {"Authorization": f"Bearer {token}"}
 
     # Create document
-    doc_data = {
-        "type_id": doc_type.id,
-        "link": "https://drive.google.com/file.pdf"
-    }
+    doc_data = {"type_id": doc_type.id, "link": "https://drive.google.com/file.pdf"}
     response = await async_client.post(
-        "/api/v1/documents/",
-        json=doc_data,
-        headers=headers
+        "/api/v1/documents/", json=doc_data, headers=headers
     )
     assert response.status_code == 200
     data = response.json()
@@ -44,12 +36,9 @@ async def test_create_document(async_client: AsyncClient, db_session):
 @pytest.mark.asyncio
 async def test_get_documents(async_client: AsyncClient, db_session):
     # Create user and type first
-    user = User(
-        username="testuser",
-        hashed_password=get_password_hash("testpass")
-    )
+    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
     db_session.add(user)
-    
+
     doc_type = DocumentType(name="comprovante")
     db_session.add(doc_type)
     await db_session.commit()
@@ -57,7 +46,7 @@ async def test_get_documents(async_client: AsyncClient, db_session):
     # Create multiple documents
     doc_data = [
         {"type_id": doc_type.id, "link": "https://drive.google.com/file1.pdf"},
-        {"type_id": doc_type.id, "link": "https://drive.google.com/file2.pdf"}
+        {"type_id": doc_type.id, "link": "https://drive.google.com/file2.pdf"},
     ]
 
     # Get token
@@ -80,10 +69,7 @@ async def test_get_documents(async_client: AsyncClient, db_session):
 @pytest.mark.asyncio
 async def test_create_document_invalid_type(async_client: AsyncClient, db_session):
     # Create user
-    user = User(
-        username="testuser",
-        hashed_password=get_password_hash("testpass")
-    )
+    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
     db_session.add(user)
     await db_session.commit()
 
@@ -94,12 +80,10 @@ async def test_create_document_invalid_type(async_client: AsyncClient, db_sessio
     # Try to create document with invalid type
     doc_data = {
         "type_id": 9999,  # non-existent type
-        "link": "https://drive.google.com/file.pdf"
+        "link": "https://drive.google.com/file.pdf",
     }
     response = await async_client.post(
-        "/api/v1/documents/",
-        json=doc_data,
-        headers=headers
+        "/api/v1/documents/", json=doc_data, headers=headers
     )
     assert response.status_code == 404
     assert response.json()["detail"] == "Document type not found"

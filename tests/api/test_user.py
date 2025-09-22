@@ -8,8 +8,7 @@ from hermanitto_docs_api.core.security import get_password_hash
 @pytest.mark.asyncio
 async def test_register_user(client: TestClient):
     response = client.post(
-        "/api/v1/users/register",
-        json={"username": "testuser", "password": "testpass"}
+        "/api/v1/users/register", json={"username": "testuser", "password": "testpass"}
     )
     assert response.status_code == 200
     data = response.json()
@@ -22,14 +21,12 @@ async def test_register_user(client: TestClient):
 async def test_register_duplicate_user(client: TestClient):
     # First registration
     client.post(
-        "/api/v1/users/register",
-        json={"username": "testuser", "password": "testpass"}
+        "/api/v1/users/register", json={"username": "testuser", "password": "testpass"}
     )
-    
+
     # Try to register the same username
     response = client.post(
-        "/api/v1/users/register",
-        json={"username": "testuser", "password": "testpass"}
+        "/api/v1/users/register", json={"username": "testuser", "password": "testpass"}
     )
     assert response.status_code == 400
     assert response.json()["detail"] == "Username already exists"
@@ -38,17 +35,13 @@ async def test_register_duplicate_user(client: TestClient):
 @pytest.mark.asyncio
 async def test_login_success(client: TestClient, db_session):
     # Create user
-    user = User(
-        username="testuser",
-        hashed_password=get_password_hash("testpass")
-    )
+    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
     db_session.add(user)
     await db_session.commit()
 
     # Try to login
     response = client.post(
-        "/api/v1/users/login",
-        json={"username": "testuser", "password": "testpass"}
+        "/api/v1/users/login", json={"username": "testuser", "password": "testpass"}
     )
     assert response.status_code == 200
     data = response.json()
@@ -59,8 +52,7 @@ async def test_login_success(client: TestClient, db_session):
 @pytest.mark.asyncio
 async def test_login_invalid_credentials(client: TestClient):
     response = client.post(
-        "/api/v1/users/login",
-        json={"username": "wronguser", "password": "wrongpass"}
+        "/api/v1/users/login", json={"username": "wronguser", "password": "wrongpass"}
     )
     assert response.status_code == 401
     assert response.json()["detail"] == "Invalid credentials"
@@ -69,10 +61,7 @@ async def test_login_invalid_credentials(client: TestClient):
 @pytest.mark.asyncio
 async def test_get_me(client: TestClient, db_session):
     # Create user
-    user = User(
-        username="testuser",
-        hashed_password=get_password_hash("testpass")
-    )
+    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
     db_session.add(user)
     await db_session.commit()
 
@@ -81,8 +70,7 @@ async def test_get_me(client: TestClient, db_session):
 
     # Get user details
     response = client.get(
-        "/api/v1/users/me",
-        headers={"Authorization": f"Bearer {token}"}
+        "/api/v1/users/me", headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 200
     data = response.json()
@@ -91,8 +79,7 @@ async def test_get_me(client: TestClient, db_session):
 
 def test_get_me_invalid_token(client: TestClient):
     response = client.get(
-        "/api/v1/users/me",
-        headers={"Authorization": "Bearer invalid-token"}
+        "/api/v1/users/me", headers={"Authorization": "Bearer invalid-token"}
     )
     assert response.status_code == 401
     assert response.json()["detail"] == "Invalid token"

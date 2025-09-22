@@ -1,9 +1,5 @@
 import pytest
-from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    AsyncSession,
-    async_sessionmaker
-)
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from fastapi.testclient import TestClient
 
 from hermanitto_docs_api.main import app
@@ -14,15 +10,11 @@ from hermanitto_docs_api.core.dependencies import get_db
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 engine = create_async_engine(
-    TEST_DATABASE_URL,
-    echo=True,
-    connect_args={"check_same_thread": False}
+    TEST_DATABASE_URL, echo=True, connect_args={"check_same_thread": False}
 )
 
 TestingSessionLocal = async_sessionmaker(
-    engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+    engine, class_=AsyncSession, expire_on_commit=False
 )
 
 
@@ -32,12 +24,12 @@ async def db_session():
     """Create a clean database on each test case."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    
+
     async with TestingSessionLocal() as session:
         yield session
         await session.rollback()
         await session.close()
-    
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 

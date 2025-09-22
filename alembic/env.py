@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 
 # Add the project root directory to the Python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from hermanitto_docs_api.core.config import settings
 from hermanitto_docs_api.models.user import Base
@@ -55,7 +55,9 @@ def do_run_migrations(connection) -> None:
 
 async def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
-    connectable = create_async_engine(cast(str, config.get_main_option("sqlalchemy.url")))
+    connectable = create_async_engine(
+        cast(str, config.get_main_option("sqlalchemy.url"))
+    )
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
