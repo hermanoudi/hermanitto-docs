@@ -4,6 +4,7 @@ from jose import jwt, JWTError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from hermanitto_docs_api.core.config import settings
+from typing import Optional
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login")
@@ -17,7 +18,7 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def create_access_token(data: dict, expires_delta: int = None):
+def create_access_token(data: dict, expires_delta: Optional[int] = None):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(
         minutes=expires_delta or settings.ACCESS_TOKEN_EXPIRE_MINUTES
