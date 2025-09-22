@@ -1,0 +1,30 @@
+# FastAPI e seus componentes
+fastapi>=0.116.0
+uvicorn[standard]>=0.35.0
+python-multipart>=0.0.9
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Banco de dados e ORM
+SQLAlchemy[asyncio]>=2.0.0
+asyncpg>=0.30.0
+alembic>=1.9.0
+aiosqlite>=0.21.0  # Para testes
+
+# Autenticação e Segurança
+passlib[bcrypt]>=1.7.4
+python-jose[cryptography]>=3.3.0
+python-dotenv>=1.0.0
+
+# Testes
+pytest>=8.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.24.0
+coverage>=7.0.0
+
+# Ferramentas de desenvolvimento
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+isort>=5.12.0
