@@ -2,13 +2,18 @@ import pytest
 from httpx import AsyncClient
 from hermanitto_docs_api.models.document_type import DocumentType
 from hermanitto_docs_api.models.user import User
-from hermanitto_docs_api.core.security import get_password_hash, create_access_token
+from hermanitto_docs_api.core.security import (
+    get_password_hash,
+    create_access_token,
+)
 
 
 @pytest.mark.asyncio
 async def test_create_document(async_client: AsyncClient, db_session):
     # Create user
-    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
+    user = User(
+        username="testuser", hashed_password=get_password_hash("testpass")
+    )
     db_session.add(user)
 
     # Create document type
@@ -21,7 +26,10 @@ async def test_create_document(async_client: AsyncClient, db_session):
     headers = {"Authorization": f"Bearer {token}"}
 
     # Create document
-    doc_data = {"type_id": doc_type.id, "link": "https://drive.google.com/file.pdf"}
+    doc_data = {
+        "type_id": doc_type.id,
+        "link": "https://drive.google.com/file.pdf",
+    }
     response = await async_client.post(
         "/api/v1/documents/", json=doc_data, headers=headers
     )
@@ -36,7 +44,9 @@ async def test_create_document(async_client: AsyncClient, db_session):
 @pytest.mark.asyncio
 async def test_get_documents(async_client: AsyncClient, db_session):
     # Create user and type first
-    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
+    user = User(
+        username="testuser", hashed_password=get_password_hash("testpass")
+    )
     db_session.add(user)
 
     doc_type = DocumentType(name="comprovante")
@@ -55,7 +65,9 @@ async def test_get_documents(async_client: AsyncClient, db_session):
 
     # Create documents
     for doc in doc_data:
-        await async_client.post("/api/v1/documents/", json=doc, headers=headers)
+        await async_client.post(
+            "/api/v1/documents/", json=doc, headers=headers
+        )
 
     # List documents
     response = await async_client.get("/api/v1/documents/", headers=headers)
@@ -67,9 +79,13 @@ async def test_get_documents(async_client: AsyncClient, db_session):
 
 
 @pytest.mark.asyncio
-async def test_create_document_invalid_type(async_client: AsyncClient, db_session):
+async def test_create_document_invalid_type(
+    async_client: AsyncClient, db_session
+):
     # Create user
-    user = User(username="testuser", hashed_password=get_password_hash("testpass"))
+    user = User(
+        username="testuser", hashed_password=get_password_hash("testpass")
+    )
     db_session.add(user)
     await db_session.commit()
 

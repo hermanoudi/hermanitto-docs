@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from hermanitto_docs_api.schemas.document_schema import DocumentCreate, DocumentOut
+from hermanitto_docs_api.schemas.document_schema import (
+    DocumentCreate,
+    DocumentOut,
+)
 from hermanitto_docs_api.services.document_service import (
     create_document,
     list_documents,
@@ -21,5 +24,7 @@ async def create_doc(
 
 
 @router.get("/", response_model=list[DocumentOut])
-async def get_docs(db: AsyncSession = Depends(get_db), user=Depends(get_current_user)):
+async def get_docs(
+    db: AsyncSession = Depends(get_db), user=Depends(get_current_user)
+):
     return await list_documents(db)

@@ -1,5 +1,8 @@
 from hermanitto_docs_api.models.user import User
-from hermanitto_docs_api.core.security import get_password_hash, verify_password
+from hermanitto_docs_api.core.security import (
+    get_password_hash,
+    verify_password,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from hermanitto_docs_api.schemas.user_schema import UserCreate
@@ -9,7 +12,8 @@ from fastapi import HTTPException, status
 
 async def create_user(db: AsyncSession, user_in: UserCreate):
     user = User(
-        username=user_in.username, hashed_password=get_password_hash(user_in.password)
+        username=user_in.username,
+        hashed_password=get_password_hash(user_in.password),
     )
     db.add(user)
     try:
@@ -19,7 +23,8 @@ async def create_user(db: AsyncSession, user_in: UserCreate):
     except IntegrityError:
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already exists",
         )
 
 

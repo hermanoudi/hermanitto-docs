@@ -37,7 +37,7 @@ test-cov:
 # Comandos de formatação e lint
 .PHONY: format
 format:
-	black .
+	black . --exclude "alembic/versions|build|dist|.eggs|.git|.mypy_cache|.pytest_cache|.tox|.venv|venv|env|__pycache__"
 
 .PHONY: lint
 lint:

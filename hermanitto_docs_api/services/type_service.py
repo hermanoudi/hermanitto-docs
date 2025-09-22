@@ -16,7 +16,8 @@ async def create_type(db: AsyncSession, type_in: DocumentTypeCreate):
     except IntegrityError:
         await db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Type already exists"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Type already exists",
         )
 
 

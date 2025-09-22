@@ -1,0 +1,43 @@
+[tool.black]
+line-length = 79
+skip-string-normalization = true
+exclude = '''
+/(
+    alembic/versions
+  | build
+  | dist
+  | .eggs
+  | .git
+  | .mypy_cache
+  | .pytest_cache
+  | .tox
+  | .venv
+  | venv
+  | env
+  | __pycache__
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 79
+skip = [
+    "alembic/versions",
+    "build",
+    "dist",
+    ".eggs",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".tox",
+    ".venv",
+    "venv",
+    "env",
+    "__pycache__"
+]
+
+
+[tool.mypy]
+python_version = 3.12
+ignore_missing_imports = true
+exclude = "alembic/versions|build|dist|.eggs|.git|.mypy_cache|.pytest_cache|.tox|.venv|venv|env|__pycache__"
