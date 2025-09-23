@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from hermanitto_docs_api.core.security import get_current_user
 from sqlalchemy.ext.asyncio import AsyncSession
 from hermanitto_docs_api.schemas.document_type_schema import (
     DocumentTypeCreate,
@@ -18,5 +19,7 @@ async def create_document_type(
 
 
 @router.get("/", response_model=list[DocumentTypeOut])
-async def get_types(db: AsyncSession = Depends(get_db)):
+async def get_types(
+    db: AsyncSession = Depends(get_db), user=Depends(get_current_user)
+):
     return await list_types(db)
